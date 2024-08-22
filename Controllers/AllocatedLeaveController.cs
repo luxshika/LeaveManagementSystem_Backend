@@ -10,9 +10,9 @@ namespace LeaveManagementSystem_Backend.Controllers
     public class AllocatedLeaveController : ControllerBase
     {
         private readonly IAllocatedLeaveService _allocatedleaveService;
-        public AllocatedLeaveController(IAllocatedLeaveService employeeService)
+        public AllocatedLeaveController(IAllocatedLeaveService allocatedleaveService)
         {
-            _allocatedleaveService = employeeService;
+            _allocatedleaveService = allocatedleaveService;
         }
 
         [HttpPost]
