@@ -18,6 +18,9 @@ namespace LeaveManagementSystem_Backend.Services
 
         public async Task<string> DeleteReview(int id)
         {
+
+            // is id exist 
+
             var res = await _reviewRepository.DeleteReview(id);
             return res;
         }

@@ -24,6 +24,7 @@ namespace LeaveManagementSystem_Backend.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllocatedLeaves()
         {
+
             var res = await _allocatedleaveService.GetAllocatedLeaves();
             return Ok(res);
         }

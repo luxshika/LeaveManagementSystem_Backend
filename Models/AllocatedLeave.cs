@@ -18,6 +18,7 @@ namespace LeaveManagementSystem_Backend.Models
         [ForeignKey("LeaveTypeId")]
         public virtual LeaveType? LeaveType { get; set; }
 
+        [Required(ErrorMessage = "allocated number is required")]
         public double allocated {  get; set; }
 
         public double taken {  get; set; }

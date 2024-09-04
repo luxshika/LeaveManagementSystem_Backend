@@ -10,5 +10,7 @@ namespace LeaveManagementSystem_Backend.IRepository
         Task<Employee?> GetEmployeeByID(int id);
         Task<Employee> UpdateEmployee(Employee employeeRequest);
         Task<string> DeleteEmployee(int id);
+        Task CreateUser(User user);
+
     }
 }

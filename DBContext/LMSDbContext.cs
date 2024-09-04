@@ -6,16 +6,16 @@ namespace LeaveManagementSystem_Backend.DBContext
     public class LMSDbContext:DbContext
     {
         public LMSDbContext(DbContextOptions<LMSDbContext> options) : base(options) { }
-        public DbSet<Leave> leaves { get; set; } = null!;
-        public DbSet<Employee> employees { get; set; } = null!;
-        public DbSet<Position> positions { get; set; } = null!;
-        public DbSet<Company> companies { get; set; } = null!;
-        public DbSet<HolidayType> holidaytypes { get; set; } = null!;
-        public DbSet<Holiday> holidays { get; set; }
+        public DbSet<Leave> Leaves { get; set; } = null!;
+        public DbSet<Employee> Employees { get; set; } = null!;
+        public DbSet<Position> Positions { get; set; } = null!;
+        public DbSet<Company> Companies { get; set; } = null!;
+        public DbSet<HolidayType> Holidaytypes { get; set; } = null!;
+        public DbSet<Holiday> Holidays { get; set; }
 
-        public DbSet<LeaveType> leavetypes { get; set; } = null!;
+        public DbSet<LeaveType> Leavetypes { get; set; } = null!;
 
-        public DbSet<AllocatedLeave> allocatedLeaves { get; set; } = null!;
+        public DbSet<AllocatedLeave> AllocatedLeaves { get; set; } = null!;
 
         public DbSet<Team> Teams { get; set; } = null!;
         public DbSet<TeamMember> TeamMembers { get; set; } = null!;
@@ -37,10 +37,20 @@ namespace LeaveManagementSystem_Backend.DBContext
                 .WithMany(e => e.TeamMembers)
                 .HasForeignKey(tm => tm.EmployeeId);
 
-          
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e => e.EmployeeNumber)
+                .IsUnique();
+
+
         }
 
-        public DbSet<Review> reviews { get; set; } = null!;
+
+        public DbSet<Review> Reviews { get; set; } = null!;
         public DbSet<AllocatedSetup> AllocatedSetups { get; set; }  = null!;
+
+        public DbSet<User> Users { get; set; } = null!;
+
+
+
     }
 }

@@ -49,7 +49,7 @@ namespace LeaveManagementSystem_Backend.Services
         public async Task AddEmployeeToTeamAsync(int teamId, int employeeId)
         {
             var team = await _teamcontext.Teams.FindAsync(teamId);
-            var employee = await _teamcontext.employees.FindAsync(employeeId);
+            var employee = await _teamcontext.Employees.FindAsync(employeeId);
 
             if (team != null && employee != null)
             {

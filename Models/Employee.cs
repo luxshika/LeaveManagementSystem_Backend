@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Azure;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,7 +8,8 @@ namespace LeaveManagementSystem_Backend.Models
     public class Employee
     {
         public int Id { get; set; }
-        public ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
+        public List<TeamMember> TeamMembers { get; } = new List<TeamMember>();
+       
 
         [Required(ErrorMessage = "EmployeeNumber is required")]
         public required string EmployeeNumber { get; set; }
@@ -21,7 +23,7 @@ namespace LeaveManagementSystem_Backend.Models
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address format")]
         public required string Email { get; set; }
-        public int Status { get; set; }
+        //public int Status { get; set; }
 
         [Required(ErrorMessage = "NIC number is required")]
         public string? NicNo { get; set; }
@@ -35,9 +37,7 @@ namespace LeaveManagementSystem_Backend.Models
 
         [ForeignKey("PositionId")]
         public virtual Position? Position { get; set; }
-
-        [Required(ErrorMessage = "TelePhone is required")]
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "Telephone number must be 10 digits")]
+ 
         public string? TelephoneNumber { get; set; }
         public string? MobileNumber { get; set; }
         public string? PermanentAddress { get; set; }
@@ -48,10 +48,10 @@ namespace LeaveManagementSystem_Backend.Models
         public string? EmergencyContactNumber { get; set; }
         public string? EmergencyContactRelationship { get; set; }
 
-        [Required(ErrorMessage = "Bank Name is required")]
+     
         public string? BankName { get; set; }
 
-        [Required(ErrorMessage = "Account No is required")]
+        
         public string? AccountNo { get; set; }
         public string? AccountHolder { get; set; }
         public string? Branch { get; set; }
@@ -60,5 +60,8 @@ namespace LeaveManagementSystem_Backend.Models
 
         public DateTime? JoinDate { get; set; }
         public DateTime? ConfirmDate { get; set; }
+
+        public bool isActive { get; set; } = true;
+       
     }
 }

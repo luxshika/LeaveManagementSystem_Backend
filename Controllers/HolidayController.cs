@@ -12,6 +12,7 @@ namespace LeaveManagementSystem_Backend.Controllers
         private readonly IHolidayService _holidayService;
 
         public HolidayController(IHolidayService holidayService)
+
         {
             _holidayService = holidayService;
         }
@@ -20,6 +21,7 @@ namespace LeaveManagementSystem_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateHoliday(Holiday holidayRequest)
         {
+            
             var res = await _holidayService.CreateHoliday(holidayRequest);
             return Ok(res);
         }

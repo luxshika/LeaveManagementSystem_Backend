@@ -1,5 +1,6 @@
 ﻿using LeaveManagementSystem_Backend.IServices;
 using LeaveManagementSystem_Backend.Models;
+using LeaveManagementSystem_Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LeaveManagementSystem_Backend.Controllers
@@ -37,18 +38,33 @@ namespace LeaveManagementSystem_Backend.Controllers
             return Ok(res);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateReview(Review reviewRequest)
+     
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateReview(int id, [FromBody] Review reviewRequest)
         {
+
+            if (id != reviewRequest.Id)
+            {
+                return BadRequest("Review ID mismatch.");
+            }
+
+
             var res = await _reviewService.UpdateReview(reviewRequest);
+
+            if (res == null)
+            {
+                return NotFound("Review not found.");
+            }
+
             return Ok(res);
         }
+
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteReview(int id)
         {
             var res = await _reviewService.DeleteReview(id);
-            return Ok(res);
+            return Ok(new { message = res });
 
         }
 

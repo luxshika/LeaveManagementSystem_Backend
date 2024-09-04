@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Azure;
+using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LeaveManagementSystem_Backend.Models
@@ -11,9 +13,11 @@ namespace LeaveManagementSystem_Backend.Models
         public int TeamId { get; set; }
         public int EmployeeId { get; set; }
 
+        
         [ForeignKey("EmployeeId")]
-        public  Employee Employee { get; set; } = null!;
+        public Employee Employee { get; set; } = null!;
+
         [ForeignKey("TeamId")]
-        public  Team Team { get; set; } = null!;
+        public Team Team { get; set; } = null!;
     }
 }

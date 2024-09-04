@@ -18,7 +18,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _context.employees.Add(employee);
+                var res = _context.Employees.Add(employee);
                 await _context.SaveChangesAsync();
                 return res.Entity;
             }
@@ -29,16 +29,25 @@ namespace LeaveManagementSystem_Backend.Repository
             }
 
         }
+        public async Task CreateUser(User user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<string> DeleteEmployee(int id)
         {
-            var employee = await _context.employees.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var employee = await _context.Employees.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (employee == null)
             {
                 return "Requested ID not available ";
             }
-            _context.employees.Remove(employee);
+            //_context.Employees.Remove(employee);
+
+            employee.isActive = false;
+            _context.Employees.Update(employee);
             await _context.SaveChangesAsync();
+           
             return " suceeded";
 
 
@@ -48,7 +57,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _context.employees.Where(x => x.Id == id).FirstOrDefault();
+                var res = _context.Employees.Where(x => x.Id == id).FirstOrDefault();
 
                 return Task.FromResult(res);
 
@@ -62,7 +71,10 @@ namespace LeaveManagementSystem_Backend.Repository
         }
         public async Task<List<Employee>> GetEmployees(string searchTerm, int pageNumber, int pageSize)
         {
-            var query = _context.employees.AsQueryable();
+            //var query = _context.Employees.AsQueryable();
+            var query = _context.Employees
+        .Where(e => e.isActive) 
+        .AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -81,19 +93,16 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _context.employees.Update(employeeRequest);
+                var res = _context.Employees.Update(employeeRequest);
                 await _context.SaveChangesAsync();
                 return res.Entity;
             }
             catch (Exception)
             {
-
                 throw;
             }
 
         }
-
-
         
     }
 }

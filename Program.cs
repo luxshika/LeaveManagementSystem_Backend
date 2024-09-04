@@ -3,48 +3,55 @@ using LeaveManagementSystem_Backend.IRepository;
 using LeaveManagementSystem_Backend.IServices;
 using LeaveManagementSystem_Backend.Repository;
 using LeaveManagementSystem_Backend.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers()
+   .AddJsonOptions(options =>
+   {
+       options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+   });
 
-builder.Services.AddControllers();
 builder.Services.AddDbContext<LMSDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//builder.Services.AddDbContext<LeaveContext>(opt =>
-//    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
-//builder.Services.AddDbContext<PositionContext>(opt =>
-//    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
+// Register the repositories and services
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
 builder.Services.AddScoped<ILeaveService, LeaveService>();
 builder.Services.AddScoped<ILeaveRepository, LeaveRepository>();
 
-builder.Services.AddScoped<IHolidayService,HolidayService>();
+builder.Services.AddScoped<IHolidayService, HolidayService>();
 builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
 
-builder.Services.AddScoped<ITeamService,TeamService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
-builder.Services.AddScoped<IAllocatedLeaveRepository,AllocatedLeaveRepository>();
+builder.Services.AddScoped<IAllocatedLeaveRepository, AllocatedLeaveRepository>();
 builder.Services.AddScoped<IAllocatedLeaveService, AllocatedLeaveService>();
 
 builder.Services.AddScoped<IAllocatedSetupRepository, AllocatedSetupRepository>();
 builder.Services.AddScoped<IAllocatedSetupService, AllocatedSetupService>();
 
+// Configure CORS policy
+builder.Services.AddCors(corsoptions =>
+{
+    corsoptions.AddPolicy("MyPolicy", policyoptions =>
+    {
+        policyoptions.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+    });
+});
+
+// Configure Swagger/OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -56,6 +63,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Apply the CORS policy
+app.UseCors("MyPolicy");
 
 app.UseAuthorization();
 

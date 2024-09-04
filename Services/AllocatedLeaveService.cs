@@ -1,4 +1,5 @@
-﻿using LeaveManagementSystem_Backend.DBContext;
+﻿using LeaveManagementSystem_Backend.Controllers;
+using LeaveManagementSystem_Backend.DBContext;
 using LeaveManagementSystem_Backend.IRepository;
 using LeaveManagementSystem_Backend.IServices;
 using LeaveManagementSystem_Backend.Models;
@@ -52,37 +53,28 @@ namespace LeaveManagementSystem_Backend.Services
 
             int yearsOfService = currentDate.Year - joinDate.Year;
 
+            int leaveDays = 0;
             if (yearsOfService == 1)
             {
-                int leaveDays = CalculateLeaveDays(joinDate, "AnnualLeave");
+                 leaveDays = CalculateLeaveDays(joinDate, "AnnualLeave");
 
      
             }
-            if (yearsOfService == 0)
-            {
-
-                var allocatedLeave = new AllocatedLeave
-                {
-                    EmployeeId = employee.Id,
-                    LeaveTypeId = (int)Enums.LeaveTypes.AnnualLeave,
-                    allocated = 0,
-                    taken = 0
-                };
-
-                await CreateAllocatedLeave(allocatedLeave);
-            }
+           
             if (yearsOfService > 1)
             {
-                var allocatedLeave = new AllocatedLeave
-                {
-                    EmployeeId = employee.Id,
-                    LeaveTypeId = (int)Enums.LeaveTypes.AnnualLeave,
-                    allocated = 14,
-                    taken = 0
-                };
-
-                await CreateAllocatedLeave(allocatedLeave);
+                
+                leaveDays = 14;
             }
+            var allocatedLeave = new AllocatedLeave
+            {
+                EmployeeId = employee.Id,
+                LeaveTypeId = (int)Enums.LeaveTypes.AnnualLeave,
+                allocated = leaveDays,
+                taken = 0
+            };
+
+            await CreateAllocatedLeave(allocatedLeave);
         }
 
         public async Task AllocatedCasualLeave(Employee employee)

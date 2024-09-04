@@ -60,12 +60,14 @@ namespace LeaveManagementSystem_Backend.Repository
             }
 
         }
-        public Task<List<Team>> GetTeams()
+        public  async Task<List<Team>> GetTeams()
         {
             try
             {
+                var query = _teamcontext.Teams.AsQueryable();
+                var r = await query.Include(x => x.TeamMembers).ToListAsync();
                 var res = _teamcontext.Teams.ToListAsync();
-                return res;
+                return r;
 
             }
             catch (Exception)
@@ -94,15 +96,22 @@ namespace LeaveManagementSystem_Backend.Repository
         public async Task AddEmployeeToTeamAsync(int teamId, int employeeId)
         {
             var team = await _teamcontext.Teams.FindAsync(teamId);
-            var employee = await _teamcontext.employees.FindAsync(employeeId);
-
-            if (team != null && employee != null)
+            if (team == null)
             {
-                var teamMember = new TeamMember { TeamId = teamId, EmployeeId = employeeId };
-                _teamcontext.TeamMembers.Add(teamMember);
-                await _teamcontext.SaveChangesAsync();
+                throw new Exception($"Team with ID {teamId} not found.");
             }
+
+            var employee = await _teamcontext.Employees.FindAsync(employeeId);
+            if (employee == null)
+            {
+                throw new Exception($"Employee with ID {employeeId} not found.");
+            }
+
+            var teamMember = new TeamMember { TeamId = teamId, EmployeeId = employeeId };
+            _teamcontext.TeamMembers.Add(teamMember);
+            await _teamcontext.SaveChangesAsync();
         }
+
 
         public async Task RemoveEmployeeFromTeamAsync(int teamId, int employeeId)
         {

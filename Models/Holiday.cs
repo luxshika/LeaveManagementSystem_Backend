@@ -14,7 +14,7 @@ namespace LeaveManagementSystem_Backend.Models
         public virtual Company? Company { get; set; }
 
         [Required(ErrorMessage = "HolidayTypeId is required")]
-        //Type_of_holidayid
+      
         public int HolidayTypeId { get; set; }
 
         [ForeignKey("HolidayTypeId")]

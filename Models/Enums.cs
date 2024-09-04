@@ -15,12 +15,12 @@
         public enum LeaveTypes
         {
             CasualLeave = 1,
-            AnnualLeave = 3,
-            SickLeave = 4,
-            NoPayLeave = 5,
-            SpecialLeave = 6,
-            HalfDayLeave = 7,
-            ShortLeave = 8
+            AnnualLeave = 2,
+            SickLeave = 3,
+            NoPayLeave = 4,
+            SpecialLeave = 5,
+            HalfDayLeave = 6,
+            ShortLeave = 7
         }
     }
 }

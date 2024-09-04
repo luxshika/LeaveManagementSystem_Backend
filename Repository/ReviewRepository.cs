@@ -17,7 +17,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _reviewcontext.reviews.Add(review);
+                var res = _reviewcontext.Reviews.Add(review);
                 await _reviewcontext.SaveChangesAsync();
                 return res.Entity;
             }
@@ -30,12 +30,12 @@ namespace LeaveManagementSystem_Backend.Repository
 
         public async Task<string> DeleteReview(int id)
         {
-            var review = await _reviewcontext.reviews.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var review = await _reviewcontext.Reviews.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (review == null)
             {
                 return "Requested ID not available ";
             }
-            _reviewcontext.reviews.Remove(review);
+            _reviewcontext.Reviews.Remove(review);
             await _reviewcontext.SaveChangesAsync();
             return " suceeded";
         }
@@ -44,7 +44,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _reviewcontext.reviews.Where(x => x.Id == id).FirstOrDefault();
+                var res = _reviewcontext.Reviews.Where(x => x.Id == id).FirstOrDefault();
 
                 return Task.FromResult(res);
 
@@ -61,7 +61,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _reviewcontext.reviews.ToListAsync();
+                var res = _reviewcontext.Reviews.ToListAsync();
                 return res;
             }
             catch (Exception)
@@ -73,7 +73,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _reviewcontext.reviews.Update(reviewRequest);
+                var res = _reviewcontext.Reviews.Update(reviewRequest);
                 await _reviewcontext.SaveChangesAsync();
                 return res.Entity;
             }

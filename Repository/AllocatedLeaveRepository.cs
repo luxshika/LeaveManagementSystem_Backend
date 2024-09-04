@@ -16,7 +16,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _allocatedleavecontext.allocatedLeaves.Add(allocatedLeave);
+                var res = _allocatedleavecontext.AllocatedLeaves.Add(allocatedLeave);
                 await _allocatedleavecontext.SaveChangesAsync();
                 return res.Entity;
             }
@@ -29,19 +29,19 @@ namespace LeaveManagementSystem_Backend.Repository
 
         public async Task<string> DeleteAllocatedLeave(int id)
         {
-            var allocatedleave = await _allocatedleavecontext.allocatedLeaves.Where(x => x.LeaveId == id).FirstOrDefaultAsync();
+            var allocatedleave = await _allocatedleavecontext.AllocatedLeaves.Where(x => x.LeaveId == id).FirstOrDefaultAsync();
             if (allocatedleave == null)
             {
                 return "Requested ID not available ";
             }
-            _allocatedleavecontext.allocatedLeaves.Remove(allocatedleave);
+            _allocatedleavecontext.AllocatedLeaves.Remove(allocatedleave);
             await _allocatedleavecontext.SaveChangesAsync();
             return " suceeded";
         }
 
         public async Task<AllocatedLeave?> GetAllocatedLeave(int? employeeId, int leaveTypeId)
         {
-            return await _allocatedleavecontext.allocatedLeaves
+            return await _allocatedleavecontext.AllocatedLeaves
                 .FirstOrDefaultAsync(al => al.EmployeeId == employeeId && al.LeaveTypeId == leaveTypeId);
         }
 
@@ -49,7 +49,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _allocatedleavecontext.allocatedLeaves.ToListAsync();
+                var res = _allocatedleavecontext.AllocatedLeaves.ToListAsync();
                 return res;
             }
             catch (Exception)
@@ -62,7 +62,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _allocatedleavecontext.allocatedLeaves.Update(allocatedLeaveRequest);
+                var res = _allocatedleavecontext.AllocatedLeaves.Update(allocatedLeaveRequest);
                 await _allocatedleavecontext.SaveChangesAsync();
                 return res.Entity;
             }

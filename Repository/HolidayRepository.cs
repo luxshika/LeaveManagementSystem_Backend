@@ -17,7 +17,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _holidayContext.holidays.Add(holiday);
+                var res = _holidayContext.Holidays.Add(holiday);
                 await _holidayContext.SaveChangesAsync();
                 return res.Entity;
             }
@@ -29,12 +29,12 @@ namespace LeaveManagementSystem_Backend.Repository
 
         public async Task<string> DeleteHoliday(int id)
         {
-            var holiday = await _holidayContext.holidays.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var holiday = await _holidayContext.Holidays.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (holiday == null)
             {
                 return "Requested ID not available ";
             }
-            _holidayContext.holidays.Remove(holiday);
+            _holidayContext.Holidays.Remove(holiday);
             await _holidayContext.SaveChangesAsync();
             return " suceeded";
         }
@@ -44,7 +44,7 @@ namespace LeaveManagementSystem_Backend.Repository
             try
             {
            
-                var res = await _holidayContext.holidays.Where(x => x.CompanyId == id).ToListAsync();
+                var res = await _holidayContext.Holidays.Where(x => x.CompanyId == id).ToListAsync();
                 return res;
             }
             catch (Exception ex)
@@ -56,7 +56,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _holidayContext.holidays.ToListAsync();
+                var res = _holidayContext.Holidays.ToListAsync();
                 return res;
             }
             catch (Exception)
@@ -69,7 +69,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _holidayContext.holidays.Update(holidayRequest);
+                var res = _holidayContext.Holidays.Update(holidayRequest);
                 await _holidayContext.SaveChangesAsync();
                 return res.Entity;
             }

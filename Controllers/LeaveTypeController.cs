@@ -19,14 +19,14 @@ namespace LeaveManagementSystem_Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LeaveType>>> GetLeaveTypes()
         {
-            return await _leaveTypecontext.leavetypes.ToListAsync();
+            return await _leaveTypecontext.Leavetypes.ToListAsync();
         }
 
       
         [HttpGet("{id}")]
         public async Task<ActionResult<LeaveType>> GetLeaveType(int id)
         {
-            var leaveType = await _leaveTypecontext.leavetypes.FindAsync(id);
+            var leaveType = await _leaveTypecontext.Leavetypes.FindAsync(id);
 
             if (leaveType == null)
             {

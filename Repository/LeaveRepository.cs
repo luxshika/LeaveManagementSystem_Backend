@@ -17,7 +17,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _leaveContext.leaves.Add(leave);
+                var res = _leaveContext.Leaves.Add(leave);
                 await _leaveContext.SaveChangesAsync();
                 return res.Entity;
             }
@@ -29,12 +29,12 @@ namespace LeaveManagementSystem_Backend.Repository
 
         public async Task<string> DeleteLeave(int id)
         {
-            var leave = await _leaveContext.leaves.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var leave = await _leaveContext.Leaves.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (leave == null)
             {
                 return "Requested ID not available ";
             }
-            _leaveContext.leaves.Remove(leave);
+            _leaveContext.Leaves.Remove(leave);
             await _leaveContext.SaveChangesAsync();
             return " suceeded";
         }
@@ -43,7 +43,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _leaveContext.leaves.Where(x => x.Id == id).FirstOrDefault();
+                var res = _leaveContext.Leaves.Where(x => x.Id == id).FirstOrDefault();
 
                 return Task.FromResult(res);
             }
@@ -57,7 +57,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _leaveContext.leaves.ToListAsync();
+                var res = _leaveContext.Leaves.ToListAsync();
                 return res;
             }
             catch (Exception)
@@ -70,7 +70,7 @@ namespace LeaveManagementSystem_Backend.Repository
         {
             try
             {
-                var res = _leaveContext.leaves.Update(leaveRequest);
+                var res = _leaveContext.Leaves.Update(leaveRequest);
                 await _leaveContext.SaveChangesAsync();
                 return res.Entity;
             }
@@ -82,7 +82,7 @@ namespace LeaveManagementSystem_Backend.Repository
 
         public async Task<List<Leave>> GetFilterLeaves(string searchTerm, int pageNumber, int pageSize)
         {
-            var query = _leaveContext.leaves.AsQueryable();
+            var query = _leaveContext.Leaves.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -104,7 +104,7 @@ namespace LeaveManagementSystem_Backend.Repository
         }
         public async Task<int> GetLeaveCountByStatusAsync(int status)
         {
-            return await _leaveContext.leaves
+            return await _leaveContext.Leaves
                 .Where(l => l.LeaveStatus == status)
                 .CountAsync();
         }
