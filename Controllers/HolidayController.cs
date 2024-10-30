@@ -40,13 +40,26 @@ namespace LeaveManagementSystem_Backend.Controllers
             return Ok(res);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateHoliday(Holiday holidayRequest)
+    
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateHoliday(int id, [FromBody] Holiday holidayRequest)
         {
+
+            if (id != holidayRequest.Id)
+            {
+                return BadRequest("Employee ID mismatch.");
+            }
+
+
             var res = await _holidayService.UpdateHoliday(holidayRequest);
+
+            if (res == null)
+            {
+                return NotFound("Hoilday not found.");
+            }
+
             return Ok(res);
         }
-
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteHoliday(int id)
         {

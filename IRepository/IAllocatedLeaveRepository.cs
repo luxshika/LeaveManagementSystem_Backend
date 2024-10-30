@@ -11,5 +11,9 @@ namespace LeaveManagementSystem_Backend.IRepository
         Task<string> DeleteAllocatedLeave(int id);
         Task<List<AllocatedLeave>> GetAllocatedLeaves();
 
+        Task<List<AllocatedLeave>> GetAllocatedLeaveEmployeeByID(int employeeId);
+
+        Task<string> DeleteAllocatedLeaveByEmployeeId(int employeeid);
+
     }
 }

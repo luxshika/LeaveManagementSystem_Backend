@@ -44,7 +44,7 @@ namespace LeaveManagementSystem_Backend.Repository
             try
             {
            
-                var res = await _holidayContext.Holidays.Where(x => x.CompanyId == id).ToListAsync();
+                var res = await _holidayContext.Holidays.Where(x => x.Id == id).ToListAsync();
                 return res;
             }
             catch (Exception ex)

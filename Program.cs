@@ -40,6 +40,9 @@ builder.Services.AddScoped<IAllocatedLeaveService, AllocatedLeaveService>();
 builder.Services.AddScoped<IAllocatedSetupRepository, AllocatedSetupRepository>();
 builder.Services.AddScoped<IAllocatedSetupService, AllocatedSetupService>();
 
+builder.Services.AddScoped<IHolidayTypeService, HolidayTypeService>();
+builder.Services.AddScoped<IHolidayTypeRepository, HoildayTypeRepository>();
+
 // Configure CORS policy
 builder.Services.AddCors(corsoptions =>
 {

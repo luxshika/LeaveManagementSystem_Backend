@@ -32,6 +32,10 @@ namespace LeaveManagementSystem_Backend.Services
         {
             return await _allocatedLeaveRepository.GetAllocatedLeave(employeeId, leaveTypeId);
         }
+        public async Task<List<AllocatedLeave>> GetAllocatedLeaveEmployeeByID(int employeeId)
+        {
+            return await _allocatedLeaveRepository.GetAllocatedLeaveEmployeeByID(employeeId);
+        }
 
         public async Task<List<AllocatedLeave>> GetAllocatedLeaves()
         {
@@ -107,6 +111,28 @@ namespace LeaveManagementSystem_Backend.Services
             };
             await CreateAllocatedLeave(allocatedLeave);
         }
+        public async Task AllocatedSickLeave(Employee employee)
+        {
+            var allocatedLeave = new AllocatedLeave
+            {
+                EmployeeId = employee.Id,
+                LeaveTypeId = (int)Enums.LeaveTypes.SickLeave,
+                allocated = 20,
+                taken = 0
+            };
+            await CreateAllocatedLeave(allocatedLeave);
+        }
+        public async Task AllocatedNoPayLeave(Employee employee)
+        {
+            var allocatedLeave = new AllocatedLeave
+            {
+                EmployeeId = employee.Id,
+                LeaveTypeId = (int)Enums.LeaveTypes.NoPayLeave,
+                allocated = 20,
+                taken = 0
+            };
+            await CreateAllocatedLeave(allocatedLeave);
+        }
 
         private int CalculateLeaveDays(DateTime joinDate, string leaveType)
         {
@@ -120,11 +146,13 @@ namespace LeaveManagementSystem_Backend.Services
             {
                 "AnnualLeave" => setup.AnnualLeave,
                 "CasualLeave" => setup.CasualLeave,
-                "SickLeave" => setup.SickLeave,
-                "NopayLeave" => setup.NopayLeave,
+                "SickLeave" => 20,
+                "NopayLeave" => 20,
                 _ => throw new ArgumentException($"Invalid leave type: {leaveType}")
             };
         }
+
+        
     }
 }
 

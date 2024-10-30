@@ -14,5 +14,12 @@ namespace LeaveManagementSystem_Backend.IServices
         Task AllocatedCasualLeave(Employee employee);
 
 
+        Task AllocatedSickLeave(Employee employee);
+
+        Task AllocatedNoPayLeave(Employee employee);
+
+         Task<List<AllocatedLeave>> GetAllocatedLeaveEmployeeByID(int employeeId);
+         
+
     }
 }

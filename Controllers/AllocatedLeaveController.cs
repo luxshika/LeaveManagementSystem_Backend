@@ -39,6 +39,16 @@ namespace LeaveManagementSystem_Backend.Controllers
             }
             return Ok(res);
         }
+        [HttpGet("{employeeId}")]
+        public async Task<ActionResult> GetAllocatedLeaveEmployeeByID(int employeeId)
+        {
+            var res = await _allocatedleaveService.GetAllocatedLeaveEmployeeByID(employeeId);
+            if (res == null)
+            {
+                return NotFound();
+            }
+            return Ok(res);
+        }
 
 
         [HttpPut]

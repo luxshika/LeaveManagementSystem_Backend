@@ -22,7 +22,8 @@ namespace LeaveManagementSystem_Backend.Services
         }
         public async Task<Leave> CreateLeave(Leave leave)
         {
-           
+            leave.LeaveDays = (leave.EndDate - leave.BeginDate).TotalDays + 1;
+
 
             var holidays = await _holidayRepository.GetHolidays();
           

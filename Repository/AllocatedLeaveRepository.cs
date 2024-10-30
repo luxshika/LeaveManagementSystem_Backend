@@ -39,11 +39,31 @@ namespace LeaveManagementSystem_Backend.Repository
             return " suceeded";
         }
 
+        public async Task<string> DeleteAllocatedLeaveByEmployeeId(int employeeid)
+        {
+            var allocatedleaves = await _allocatedleavecontext.AllocatedLeaves.Where(x=>x.EmployeeId == employeeid).ToListAsync();
+            if(allocatedleaves == null)
+            {
+                return "Allocated leaves not found to the employee";
+            }
+            _allocatedleavecontext.AllocatedLeaves.RemoveRange(allocatedleaves);
+            await _allocatedleavecontext.SaveChangesAsync();
+            return " suceeded";
+        }
+
         public async Task<AllocatedLeave?> GetAllocatedLeave(int? employeeId, int leaveTypeId)
         {
             return await _allocatedleavecontext.AllocatedLeaves
                 .FirstOrDefaultAsync(al => al.EmployeeId == employeeId && al.LeaveTypeId == leaveTypeId);
         }
+
+        public async Task<List<AllocatedLeave>> GetAllocatedLeaveEmployeeByID(int employeeId)
+        {
+            return await _allocatedleavecontext.AllocatedLeaves
+                        .Where(al => al.EmployeeId == employeeId)
+                        .ToListAsync();
+        }
+
 
         public Task<List<AllocatedLeave>> GetAllocatedLeaves()
         {
@@ -73,5 +93,6 @@ namespace LeaveManagementSystem_Backend.Repository
             }
 
         }
+
     }
 }

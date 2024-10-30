@@ -48,7 +48,7 @@ namespace LeaveManagementSystem_Backend.Migrations
 
                     b.HasIndex("LeaveTypeId");
 
-                    b.ToTable("allocatedLeaves");
+                    b.ToTable("AllocatedLeaves");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.AllocatedSetup", b =>
@@ -130,7 +130,7 @@ namespace LeaveManagementSystem_Backend.Migrations
 
                     b.HasKey("CompanyId");
 
-                    b.ToTable("companies");
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.Employee", b =>
@@ -145,11 +145,9 @@ namespace LeaveManagementSystem_Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AccountNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BankName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Branch")
@@ -181,7 +179,7 @@ namespace LeaveManagementSystem_Backend.Migrations
 
                     b.Property<string>("EmployeeNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -216,21 +214,23 @@ namespace LeaveManagementSystem_Backend.Migrations
                     b.Property<string>("Profile")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.Property<string>("TelephoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TypeOfAccount")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeNumber")
+                        .IsUnique();
 
                     b.HasIndex("PositionId");
 
-                    b.ToTable("employees");
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.Holiday", b =>
@@ -262,7 +262,7 @@ namespace LeaveManagementSystem_Backend.Migrations
 
                     b.HasIndex("HolidayTypeId");
 
-                    b.ToTable("holidays");
+                    b.ToTable("Holidays");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.HolidayType", b =>
@@ -279,7 +279,7 @@ namespace LeaveManagementSystem_Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("holidaytypes");
+                    b.ToTable("Holidaytypes");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.Leave", b =>
@@ -340,7 +340,7 @@ namespace LeaveManagementSystem_Backend.Migrations
 
                     b.HasIndex("LeaveTypeId");
 
-                    b.ToTable("leaves");
+                    b.ToTable("Leaves");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.LeaveType", b =>
@@ -357,7 +357,7 @@ namespace LeaveManagementSystem_Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("leavetypes");
+                    b.ToTable("Leavetypes");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.Position", b =>
@@ -374,7 +374,7 @@ namespace LeaveManagementSystem_Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("positions");
+                    b.ToTable("Positions");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.Review", b =>
@@ -399,7 +399,7 @@ namespace LeaveManagementSystem_Backend.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("reviews");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.Team", b =>
@@ -438,6 +438,32 @@ namespace LeaveManagementSystem_Backend.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("TeamMembers");
+                });
+
+            modelBuilder.Entity("LeaveManagementSystem_Backend.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.AllocatedLeave", b =>
@@ -536,6 +562,17 @@ namespace LeaveManagementSystem_Backend.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("LeaveManagementSystem_Backend.Models.User", b =>
+                {
+                    b.HasOne("LeaveManagementSystem_Backend.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem_Backend.Models.Employee", b =>

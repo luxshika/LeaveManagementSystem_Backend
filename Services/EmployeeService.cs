@@ -2,6 +2,7 @@
 using LeaveManagementSystem_Backend.IRepository;
 using LeaveManagementSystem_Backend.IServices;
 using LeaveManagementSystem_Backend.Models;
+using LeaveManagementSystem_Backend.Repository;
 using LeaveManagementSystem_Backend.Utilities;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +11,17 @@ namespace LeaveManagementSystem_Backend.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
+
+        private readonly IAllocatedLeaveRepository _allocatedLeaveRepository;
   
         private readonly IAllocatedLeaveService _allocatedLeaveService;
-        public EmployeeService(IEmployeeRepository employeeRepository, IAllocatedLeaveService allocatedLeaveService)
+        public EmployeeService(IEmployeeRepository employeeRepository, IAllocatedLeaveService allocatedLeaveService,IAllocatedLeaveRepository allocatedLeaveRepository)
         {
             _employeeRepository = employeeRepository;
             _allocatedLeaveService = allocatedLeaveService;
-           
+            _allocatedLeaveRepository = allocatedLeaveRepository;
+
+
         }
         public async Task<Employee> CreateEmployee(EmployeeRequest employeeRequest)
         {
@@ -56,6 +61,8 @@ namespace LeaveManagementSystem_Backend.Services
             {
                 await _allocatedLeaveService.AllocateAnnualLeave(createdEmployee);
                 await _allocatedLeaveService.AllocatedCasualLeave(createdEmployee);
+                await _allocatedLeaveService.AllocatedSickLeave(createdEmployee);
+                await _allocatedLeaveService.AllocatedNoPayLeave(createdEmployee);
 
                 if (employeeRequest.CreateUser)
                 {
@@ -105,6 +112,27 @@ namespace LeaveManagementSystem_Backend.Services
         public async Task<Employee> UpdateEmployee(Employee employeeRequest)
         {
             var res = await _employeeRepository.UpdateEmployee(employeeRequest);
+           
+
+            try
+            {
+                if(res != null)
+                {
+                    await _allocatedLeaveRepository.DeleteAllocatedLeaveByEmployeeId(res.Id);
+                }
+               
+                await _allocatedLeaveService.AllocateAnnualLeave(employeeRequest);
+                await _allocatedLeaveService.AllocatedCasualLeave(employeeRequest);
+                await _allocatedLeaveService.AllocatedSickLeave(employeeRequest);
+                await _allocatedLeaveService.AllocatedNoPayLeave(employeeRequest);
+
+                
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error occurred while processing employee creation.", ex);
+            }
+           
             return res;
         }
     }
